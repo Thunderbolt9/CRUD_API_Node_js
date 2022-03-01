@@ -137,12 +137,46 @@ router.delete("/:id", checkAuth, (req, res) => {
 // update a users data
 router.patch("/update/:id", checkAuth, (req, res) => {
   const { id } = req.params;
-  const currentUser = usersInfo.find((user) => user.id === id);
+  const updateUserIndex = usersInfo.findIndex((user) => user.id === id);
 
-  currentUser.name = req.body.name;
-  currentUser.mobile = req.body.mobile;
+  usersInfo[updateUserIndex].name = req.body.name;
+  usersInfo[updateUserIndex].mobile = req.body.mobile;
 
   res.send(usersInfo);
+});
+
+// update user password
+router.patch("/changePassword/:id", checkAuth, (req, res) => {
+  const { id } = req.params;
+  const check = usersInfo.find((user) => user.id === id);
+
+  if (check == null) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Account does not exists" });
+  }
+
+  bcrypt.compare(req.body.oldPassword, check.password, (err, result) => {
+    if (err) {
+      return res.status(401).json({
+        message: "Auth failed",
+      });
+    }
+    if (result) {
+      bcrypt.hash(req.body.newPassword, 10, (err, hash) => {
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: err.message,
+          });
+        } else {
+          const updatePassIndex = usersInfo.findIndex((user) => user.id === id);
+          usersInfo[updatePassIndex].password = hash;
+          return res.send(usersInfo);
+        }
+      });
+    }
+  });
 });
 
 module.exports = router;
