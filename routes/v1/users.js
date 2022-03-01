@@ -18,22 +18,7 @@ const upload = multer({ storage: storage });
 
 const router = express.Router();
 
-let usersInfo = [
-  {
-    id: "lmok1gr0l07m33on",
-    name: "Bhavesh Yadav",
-    email: "yadavyash0904@gmail.com",
-    mobile: 7869546321,
-    password: 1234,
-  },
-  {
-    id: "lmok1grol07m3y6q",
-    name: "Nevil Rego",
-    email: "nevirego123@gmail.com",
-    mobile: 8976835421,
-    password: 1234,
-  },
-];
+let usersInfo = [];
 
 // All routes here start with '/users' already
 
@@ -131,7 +116,7 @@ router.delete("/:id", checkAuth, (req, res) => {
 
   usersInfo = usersInfo.filter((user) => user.id !== id);
 
-  res.send(usersInfo);
+  res.send("User deleted");
 });
 
 // update a users data
