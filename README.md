@@ -15,7 +15,12 @@ $ cd CRUD_API_Node_js
 $ npm install
 ```
 
-#### 3. Run project
+#### 3. Create uploads folder
+```
+mkdir uploads
+```
+
+#### 4. Run project
 ```console
 $ npm start
 ```
